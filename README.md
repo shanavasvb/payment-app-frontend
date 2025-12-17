@@ -172,7 +172,36 @@ eas build --platform android
 eas build --platform ios
 ```
 
-## 📄 License
+## � APK Download
+
+Android APK generated using Expo EAS Build:
+
+**Download Link:** [https://expo.dev/artifacts/eas/REPLACE_WITH_APK_LINK.apk](https://expo.dev/artifacts/eas/REPLACE_WITH_APK_LINK.apk)
+
+> Replace the placeholder link with the actual APK download URL after building with `eas build --platform android`
+
+## 🌐 Deployment
+
+The backend service is deployed on an AWS EC2 instance.
+
+**Backend Details**
+- **Platform**: AWS EC2 (Ubuntu)
+- **Node.js**: v20
+- **Process Manager**: PM2
+- **Database**: MySQL
+- **API Base URL**: http://13.201.81.124:3000
+
+**Health Check**
+```
+http://13.201.81.124:3000/health
+```
+
+To connect the app to the deployed backend, update `config.js`:
+```javascript
+export const API_URL = 'http://13.201.81.124:3000';
+```
+
+## �📄 License
 
 This project is for educational/evaluation purposes.
 
