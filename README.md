@@ -1,50 +1,185 @@
-# Welcome to your Expo app 👋
+# Payment Collection App - Frontend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo Router for managing customer loan payments and EMI collections.
 
-## Get started
+## 📱 Features
 
-1. Install dependencies
+- **Customer Management**: View all customers with loan details (account number, loan amount, interest rate, tenure, EMI due)
+- **Payment Processing**: Submit payments against customer accounts
+- **Real-time Updates**: Instant EMI due updates after successful payment (optimistic UI)
+- **Success Notifications**: Web-compatible success messages with auto-dismiss
+- **Pull-to-Refresh**: Manually refresh customer data
+- **Form Validation**: Client-side validation for account numbers and payment amounts
+- **Responsive Design**: Works on Web, iOS, and Android
+
+## 🛠️ Tech Stack
+
+- **Framework**: React Native with Expo Router
+- **Language**: TypeScript
+- **State Management**: React Hooks (useState, useEffect)
+- **API Communication**: Fetch API with AbortController
+- **UI Components**: Custom reusable components
+- **Navigation**: File-based routing (no tab navigation)
+
+## 📁 Project Structure
+
+```
+payment-frontend/
+├── app/
+│   ├── _layout.tsx          # Root layout configuration
+│   └── index.tsx            # Main screen with business logic
+├── components/
+│   ├── CustomerList.tsx     # Customer cards display component
+│   ├── PaymentForm.tsx      # Payment submission form
+│   └── SuccessMessage.tsx   # Success banner component
+├── services/
+│   └── api.ts               # API service layer (fetch calls)
+├── types/
+│   └── customer.ts          # TypeScript interfaces
+├── config.js                # API URL configuration
+└── package.json
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+- Expo CLI (optional)
+
+### Installation
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Configure API URL**
+
+   Update `config.js` with your backend server URL:
+   ```javascript
+   export const API_URL = 'http://127.0.0.1:3000';
+   ```
+
+3. **Start the development server**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. **Run on different platforms**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   - Press `w` for Web
+   - Press `a` for Android emulator
+   - Press `i` for iOS simulator
+   - Scan QR code with Expo Go app for physical device
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🔌 API Integration
 
-## Get a fresh project
+The app connects to a backend API with the following endpoints:
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+### GET `/customers`
+Fetches all customer loan details
+```typescript
+Response: {
+  success: boolean;
+  data: Customer[];
+}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### POST `/payments`
+Submits a payment for a customer
+```typescript
+Request: {
+  account_number: string;
+  payment_amount: number;
+}
 
-## Learn more
+Response: {
+  success: boolean;
+  data: {
+    payment_id: number;
+    account_number: string;
+    payment_amount: number;
+    remaining_due: number;
+  }
+}
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🎨 Key Features Implementation
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Optimistic UI Updates
+Payments update the local state immediately without waiting for a refresh, providing instant feedback to users.
 
-## Join the community
+### AbortController Pattern
+Network requests use AbortController to prevent memory leaks when components unmount (especially important for Expo Web).
 
-Join our community of developers creating universal apps.
+### Type Safety
+Full TypeScript coverage with interfaces for Customer, Payment responses, and component props.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Component Separation
+Business logic is separated from UI components for better maintainability and reusability.
+
+## 🐛 Troubleshooting
+
+### Issue: Infinite loading on Expo Web
+**Solution**: AbortController cleanup is implemented in useEffect to prevent aborted requests.
+
+### Issue: toFixed() crashes
+**Solution**: All numeric fields from API are wrapped with `Number()` before calling `.toFixed()` to handle string values from MySQL DECIMAL fields.
+
+### Issue: EMI not updating after payment
+**Solution**: Optimistic state update is implemented - local state updates immediately using the `remaining_due` from API response.
+
+## 📝 Environment Variables
+
+Create a `.env` file (if needed):
+```
+API_URL=http://your-backend-url:3000
+```
+
+## 🔧 Available Scripts
+
+- `npm start` - Start Expo development server
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS
+- `npm run web` - Run on web browser
+
+## 📦 Dependencies
+
+Key dependencies:
+- `expo` - Expo framework
+- `expo-router` - File-based routing
+- `react-native` - React Native core
+- `typescript` - Type safety
+
+## 🏗️ Build for Production
+
+### Web
+```bash
+npx expo export:web
+```
+
+### Android APK
+```bash
+eas build --platform android
+```
+
+### iOS
+```bash
+eas build --platform ios
+```
+
+## 📄 License
+
+This project is for educational/evaluation purposes.
+
+## 👤 Author
+
+Shanavas
+
+---
+
+**Note**: Ensure the backend server is running before starting the frontend application.
