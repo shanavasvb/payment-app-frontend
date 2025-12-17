@@ -112,10 +112,6 @@ export default function App() {
       style={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
     >
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Payment Collection App</Text>
-      </View>
-
       <PaymentForm
         accountNumber={accountNumber}
         paymentAmount={paymentAmount}
@@ -142,17 +138,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-  },
-  header: {
-    backgroundColor: '#007AFF',
-    padding: 20,
-    paddingTop: 50,
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
   },
   listContainer: {
     margin: 15,

@@ -8,6 +8,15 @@ export interface Customer {
   total_loan_amount: number;
 }
 
+export interface Payment {
+  id: number;
+  payment_date: string;
+  payment_amount: number;
+  status: string;
+  customer_name: string;
+  account_number: string;
+}
+
 export interface PaymentResponse {
   success: boolean;
   message?: string;
@@ -23,4 +32,10 @@ export interface CustomersResponse {
   success: boolean;
   message?: string;
   data?: Customer[];
+}
+
+export interface PaymentHistoryResponse {
+  success: boolean;
+  message?: string;
+  data?: Payment[];
 }
